@@ -93,37 +93,39 @@ Responsible for loading the pre-computed bundle and serving it for downstream ap
 Follow these steps to build and test the RAG pipeline from scratch.
 
 ### 1. Prerequisites
-Ensure you have Python 3.x installed. Install the necessary dependencies:
+Ensure you have `uv` installed. Setup the project and scientific dependencies:
 ```bash
-pip install sentence-transformers faiss-cpu numpy
+# Initialize uv project (if not already done)
+uv init
+uv add sentence-transformers faiss-cpu numpy
 ```
 
 ### 2. Ingest Data
 Extract content from the source repository into a structured JSON.
 ```bash
 cd rag
-python3 ingest_uupm.py
+uv run ingest_uupm.py
 ```
 *Output: `data/raw_docs.json`*
 
 ### 3. Generate Chunks
 Slice the raw documents into smaller semantic chunks for better embedding accuracy.
 ```bash
-python3 chunker.py
+uv run chunker.py
 ```
 *Output: `data/uupm_chunks.json`*
 
 ### 4. Build Vector Index
 Encode chunks into embeddings and build the FAISS vector database.
 ```bash
-python3 build_index.py
+uv run build_index.py
 ```
 *Output: `rag/index/faiss.index` & `rag/index/metadata.pkl`*
 
 ### 5. Run Search Test
 Verify the pipeline by running a local search query.
 ```bash
-python3 search.py
+uv run search.py
 ```
 
 ---
