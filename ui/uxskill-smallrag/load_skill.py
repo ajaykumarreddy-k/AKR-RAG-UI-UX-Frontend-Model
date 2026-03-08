@@ -1,0 +1,28 @@
+import pickle
+import faiss
+import os
+from sentence_transformers import SentenceTransformer
+
+
+class UXSkillRAG:
+
+    def __init__(self):
+
+        base_dir = os.path.dirname(__file__)
+        bundle_path = os.path.join(base_dir, "uupm_rag_bundle.pkl")
+
+        bundle = pickle.load(open(bundle_path, "rb"))
+
+        self.index = faiss.deserialize_index(bundle["index"])
+        self.metadata = bundle["metadata"]
+
+        self.model = SentenceTransformer(bundle["embedding_model"])
+
+
+    def search(self, query, k=5):
+
+        q = self.model.encode([query], normalize_embeddings=True)
+
+        scores, ids = self.index.search(q, k)
+
+        return [self.metadata[i]["content"] for i in ids[0]]
