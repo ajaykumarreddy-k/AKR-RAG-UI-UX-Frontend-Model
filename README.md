@@ -88,6 +88,66 @@ Responsible for loading the pre-computed bundle and serving it for downstream ap
 
 ---
 
+## 🚀 Quick Start / How to Run
+
+Follow these steps to build and test the RAG pipeline from scratch.
+
+### 1. Prerequisites
+Ensure you have Python 3.x installed. Install the necessary dependencies:
+```bash
+pip install sentence-transformers faiss-cpu numpy
+```
+
+### 2. Ingest Data
+Extract content from the source repository into a structured JSON.
+```bash
+cd rag
+python3 ingest_uupm.py
+```
+*Output: `data/raw_docs.json`*
+
+### 3. Generate Chunks
+Slice the raw documents into smaller semantic chunks for better embedding accuracy.
+```bash
+python3 chunker.py
+```
+*Output: `data/uupm_chunks.json`*
+
+### 4. Build Vector Index
+Encode chunks into embeddings and build the FAISS vector database.
+```bash
+python3 build_index.py
+```
+*Output: `rag/index/faiss.index` & `rag/index/metadata.pkl`*
+
+### 5. Run Search Test
+Verify the pipeline by running a local search query.
+```bash
+python3 search.py
+```
+
+---
+
+## 📊 Example Output
+
+When running `search.py` with a query like `"modern SaaS landing page"`, the pipeline retrieves the most relevant UI/UX guidelines:
+
+**Query:** `modern SaaS landing page`
+
+**Result:**
+```text
+---
+Bento Box Grid | Dashboards, product pages, portfolios |
+...
+Soft UI Evolution | Modern enterprise apps, SaaS |
+...
+- [ ] Responsive at 375px, 768px, 1024px, 1440px
+- [ ] No content hidden behind fixed navbars
+---
+```
+
+---
+
 ## 🌟 Credits
 
 This RAG pipeline was initially designed to ingest and parse the rich UI/UX architectural intelligence provided by the phenomenal **UI UX Pro Max** skill repository.
